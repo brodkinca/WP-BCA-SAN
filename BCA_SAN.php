@@ -9,7 +9,7 @@
  * @link     http://brodkinca.com/
  *
  * Plugin Name: BCA Swiss Army Knife
- * Version: 1.0.0
+ * Version: 1.0.1
  * Description: Allows Brodkin CyberArts employees to access your Wordpress installtion for support and troubleshooting.
  * Author: Brodkin CyberArts
  * Author URI: http://brodkinca.com/
