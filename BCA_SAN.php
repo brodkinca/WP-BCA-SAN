@@ -174,7 +174,7 @@ class BCA_SAN
      */
     public function hookAssets()
     {
-        wp_enqueue_style('bca-san', plugins_url('css/bca-san.css', __FILE__));
+        wp_enqueue_style('bca-san', plugins_url('assets/css/bca-san.css', __FILE__));
     }
 
     /**
