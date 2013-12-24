@@ -1,0 +1,16 @@
+{
+    "name": "bca/wp-bca-san",
+    "description": "BCA Swiss Army Knife",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ryan Brodkin",
+            "email": "ryan@brodkinca.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
