@@ -16,6 +16,7 @@
  */
 namespace BCA\WPSAN;
 
+require_once __DIR__.'/src/Dashboard.php';
 require_once __DIR__.'/src/Login.php';
 
 define('WPSAN_PATH', __FILE__);
@@ -35,4 +36,5 @@ function view ($path, array $vars = array())
 }
 
 // Instantiate the plugin
+new Dashboard();
 new Login();
