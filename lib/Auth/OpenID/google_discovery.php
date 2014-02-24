@@ -55,11 +55,11 @@ class GApps_OpenID_Discovery
      * OpenID discovery for Google Apps hosted domains.
      *
      * @param Auth_OpenID_Consumer $consumer Consumer instance to enable
-     * Google Apps support for.
-     * @param array(str) $ca_dirs Array of directories containing trusted
-     * root certificates (refer to OpenSSL documentation)
-     * @param memcache $memcache Optional memcache handle for caching
-     * discovery information.
+     *                                       Google Apps support for.
+     * @param array(str)           $ca_dirs  Array of directories containing trusted
+     *                                       root certificates (refer to OpenSSL documentation)
+     * @param memcache             $memcache Optional memcache handle for caching
+     *                                       discovery information.
      */
     public function GApps_OpenID_Discovery($consumer, $trust_roots = null, $memcache = null)
     {
@@ -100,7 +100,8 @@ class GApps_OpenID_Discovery
      * @param  Auth_Yadis_HTTPFetcher                        $fetcher HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */
-    function &perform_discovery($url, $fetcher) {
+    public function perform_discovery($url, $fetcher)
+    {
         if (preg_match('_^.*://(.*?)/.*_', $url, $matches)) {
             $domain = $matches[1];
             $claimed_id = $url;
@@ -119,7 +120,8 @@ class GApps_OpenID_Discovery
      * @param  Auth_Yadis_HTTPFetcher                        $fetcher HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */
-    function &discover_site($domain, $fetcher) {
+    public function discover_site($domain, $fetcher)
+    {
         $url = $this->fetch_host_meta($domain, $fetcher);
         $xrds =& $this->fetch_xrds_services($domain, $url, $fetcher);
         $services = $xrds->services(array('filter_MatchesAnyOpenIDType'));
@@ -137,7 +139,8 @@ class GApps_OpenID_Discovery
      * @param  Auth_Yadis_HTTPFetcher                        $fetcher    HTTP client for fetching discovery information.
      * @return array(str,array(Auth_OpenID_ServiceEndpoint))
      */
-    function &discover_user($domain, $claimed_id, $fetcher) {
+    public function discover_user($domain, $claimed_id, $fetcher)
+    {
         $site_url = $this->fetch_host_meta($domain, $fetcher);
         $site_xrds =& $this->fetch_xrds_services($domain, $site_url, $fetcher);
         list($user_url,$next_authority) = $this->get_user_xrds_url($site_xrds, $claimed_id);
@@ -192,9 +195,12 @@ class GApps_OpenID_Discovery
         if ($url == null) {
             throw new GApps_Discovery_Exception("Invalid null URL");
         }
+
+        $body = null;
         if ($use_cache) {
             $body = $this->get_cache($url);
         }
+
         if ($body == null) {
             $http_resp = @$fetcher->get($url);
             if ($http_resp->status != 200 and $http_resp->status != 206) {
@@ -214,7 +220,7 @@ class GApps_OpenID_Discovery
                 $this->put_cache($url,$body);
             }
         }
-        $xrds =& Auth_Yadis_XRDS::parseXRDS($body);
+        $xrds = Auth_Yadis_XRDS::parseXRDS($body);
 
         return $xrds;
     }
@@ -422,7 +428,7 @@ class GApps_OpenID_SimpleSign
      *
      * @param str $xml             XML doc to verify
      * @param str $signature_value Base64 encoded signature to verify against.
-     * @returns str
+     *                             @returns str
      */
     public function verify($xml, $signature_value)
     {
