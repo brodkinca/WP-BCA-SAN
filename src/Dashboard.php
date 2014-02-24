@@ -41,9 +41,9 @@ class Dashboard
      */
     public function hookWidgets()
     {
-        include_once ABSPATH.'wp-admin/includes/template.php';
-        include_once ABSPATH.'wp-admin/includes/screen.php';
-        include_once ABSPATH.'wp-admin/includes/dashboard.php';
+        require_once ABSPATH.'wp-admin/includes/template.php';
+        require_once ABSPATH.'wp-admin/includes/screen.php';
+        require_once ABSPATH.'wp-admin/includes/dashboard.php';
 
         wp_add_dashboard_widget('bca-rss', 'News from Brodkin CyberArts', array(&$this, 'widgetRSS'));
     }
@@ -55,7 +55,7 @@ class Dashboard
      */
     public function widgetRSS()
     {
-        include_once ABSPATH.WPINC.'/feed.php';
+        require_once ABSPATH.WPINC.'/feed.php';
 
         // Get a SimplePie feed object from the specified feed source.
         $rss = fetch_feed('http://feeds.feedburner.com/BCA-WP-SAN');

@@ -64,12 +64,12 @@ class Login
 
                 // Include OpenID Library
                 set_include_path(dirname(__FILE__).'/../lib'.PATH_SEPARATOR.get_include_path());
-                include_once 'Auth/OpenID/Consumer.php';
-                include_once 'Auth/OpenID/FileStore.php';
-                include_once 'Auth/OpenID/SReg.php';
-                include_once 'Auth/OpenID/PAPE.php';
-                include_once 'Auth/OpenID/AX.php';
-                include_once 'Auth/OpenID/google_discovery.php';
+                require_once 'Auth/OpenID/Consumer.php';
+                require_once 'Auth/OpenID/FileStore.php';
+                require_once 'Auth/OpenID/SReg.php';
+                require_once 'Auth/OpenID/PAPE.php';
+                require_once 'Auth/OpenID/AX.php';
+                require_once 'Auth/OpenID/google_discovery.php';
                 restore_include_path();
 
                 /* Auth Response */
