@@ -16,7 +16,9 @@
  */
 namespace BCA\WPSAN;
 
-require 'vendor/autoload.php';
+require_once __DIR__.'/src/Login.php';
+
+define('WPSAN_PATH', __FILE__);
 
 /**
  * Load View

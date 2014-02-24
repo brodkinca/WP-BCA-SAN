@@ -1,7 +1,7 @@
 <div>
     <a class="bca-login-byline" href="http://brodkinca.com/">
       Professional Support by &nbsp;
-      <img src="<?php echo plugins_url('assets/img/logo_sm.png', dirname(__FILE__))?>" alt="BCA">
+      <img src="<?php echo plugins_url('assets/img/logo_sm.png', WPSAN_PATH)?>" alt="BCA">
     </a>
 </div>
 <div>

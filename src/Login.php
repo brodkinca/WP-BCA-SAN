@@ -175,7 +175,7 @@ class Login
      */
     public function hookAssets()
     {
-        wp_enqueue_style('bca-san', plugins_url('assets/css/bca-san.css', __FILE__));
+        wp_enqueue_style('bca-san', plugins_url('assets/css/bca-san.css', WPSAN_PATH));
     }
 
     /**
