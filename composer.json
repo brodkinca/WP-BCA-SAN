@@ -12,5 +12,10 @@
     "minimum-stability": "stable",
     "require": {
         "composer/installers": "~1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "BCA\\WPSAN\\": "src/"
+        }
     }
 }

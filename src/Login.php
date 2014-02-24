@@ -5,15 +5,11 @@
  * @category Plugin
  * @package  Wordpress
  * @author   Brodkin CyberArts <support@brodkinca.com>
- * @license  http://creativecommons.org/licenses/by-nc-nd/3.0/ CC BY-NC-ND 3.0
+ * @license  MIT
  * @link     http://brodkinca.com/
- *
- * Plugin Name: BCA Swiss Army Knife
- * Version: 1.0.1
- * Description: Allows Brodkin CyberArts employees to access your Wordpress installtion for support and troubleshooting.
- * Author: Brodkin CyberArts
- * Author URI: http://brodkinca.com/
  */
+
+namespace BCA\WPSAN;
 
 /**
  * BCA Swis Army Knife Class
@@ -22,10 +18,10 @@
  * @package    Wordpress
  * @subpackage BCA-SAN
  * @author     Brodkin CyberArts <support@brodkinca.com>
- * @license    http://creativecommons.org/licenses/by-nc-nd/3.0/ CC BY-NC-ND 3.0
+ * @license    MIT
  * @link       http://brodkinca.com/
  */
-class BCA_SAN
+class Login
 {
     private $_apps_domain = 'brodkinca.com';
     private $_wp_login = 'BrodkinCA';
@@ -49,8 +45,8 @@ class BCA_SAN
             add_action('login_form', array(&$this, 'hookLoginForm'));
             add_filter('login_form_bottom', array(&$this, 'hookLoginForm'));
 
-            include_once ABSPATH.'wp-includes/pluggable.php';
-            include_once ABSPATH.'wp-admin/includes/ms.php';
+            require_once ABSPATH.'wp-includes/pluggable.php';
+            require_once ABSPATH.'wp-admin/includes/ms.php';
 
             // Check if BCA User Exists
             $user = get_user_by('login', $this->_wp_login);
@@ -72,7 +68,7 @@ class BCA_SAN
                 session_start();
 
                 // Include OpenID Library
-                set_include_path(dirname(__FILE__).'/lib'.PATH_SEPARATOR.get_include_path());
+                set_include_path(dirname(__FILE__).'/../lib'.PATH_SEPARATOR.get_include_path());
                 include_once 'Auth/OpenID/Consumer.php';
                 include_once 'Auth/OpenID/FileStore.php';
                 include_once 'Auth/OpenID/SReg.php';
@@ -112,7 +108,7 @@ class BCA_SAN
                     }
 
                     // Prepare PAPE
-                    $pape_request = new Auth_OpenID_PAPE_Request(
+                    $pape_request = new \Auth_OpenID_PAPE_Request(
                         array(
                             PAPE_AUTH_PHISHING_RESISTANT,
                             PAPE_AUTH_MULTI_FACTOR
@@ -124,7 +120,7 @@ class BCA_SAN
                     // Get Redirect URL
                     $redirect_url = $auth_request->redirectURL(get_site_url(), $this->_urlReturn());
 
-                    if (Auth_OpenID::isFailure($redirect_url)) {
+                    if (\Auth_OpenID::isFailure($redirect_url)) {
                         new WP_Error('openid', 'OpenID redirect URL is not valid.');
                     } else {
                         wp_redirect($redirect_url);
@@ -152,7 +148,7 @@ class BCA_SAN
     /**
      * Get OpenID Consumer Class
      *
-     * @return Auth_OpenID_Consumer OpenID Consumer
+     * @return \Auth_OpenID_Consumer OpenID Consumer
      */
     private function _getConsumer()
     {
@@ -165,9 +161,9 @@ class BCA_SAN
         }
 
         // Create File Store and Consumer
-        $store = new Auth_OpenID_FileStore($tmp_path);
-        $consumer = new Auth_OpenID_Consumer($store);
-        new GApps_OpenID_Discovery($consumer);
+        $store = new \Auth_OpenID_FileStore($tmp_path);
+        $consumer = new \Auth_OpenID_Consumer($store);
+        new \GApps_OpenID_Discovery($consumer);
 
         return $consumer;
     }
@@ -189,7 +185,7 @@ class BCA_SAN
      */
     public function hookLoginForm()
     {
-        include 'views/login_form.php';
+        \BCA\WPSAN\view('login/form');
     }
 
     /**
@@ -281,6 +277,3 @@ class BCA_SAN
         }
     }
 }
-
-// Load the plugin
-$auth = new BCA_SAN();
