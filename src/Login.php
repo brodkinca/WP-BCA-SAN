@@ -92,7 +92,7 @@ class Login
                     } elseif ($response->status == 'failure') {
                         new WP_Error('openid', 'OpenID login failed.');
                     } elseif ($response->status == 'cancel') {
-                        new WP_Error('openid', 'OpenID login cancelled.');
+                        new WP_Error('openid', 'OpenID login canceled.');
                     }
 
                 } else {
