@@ -155,7 +155,7 @@ class BCA_SAN
         $tmp_path = sys_get_temp_dir();
 
         // Is Path Writable?
-        if (!is_writable($path)) {
+        if (!is_writable($tmp_path)) {
             new WP_Error('openid', __("Cannot write to temporary directory."));
         }
 
