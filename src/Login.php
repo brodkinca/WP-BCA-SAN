@@ -71,54 +71,18 @@ class Login
                 require_once 'Auth/OpenID/google_discovery.php';
                 restore_include_path();
 
-                /* Auth Response */
+                // BCA User Must Exist
                 if (empty($this->_wp_user_id)) {
-                    // BCA User Must Exist
-                    die('BCA user does not exist.');
+                    new WP_Error('openid', 'BCA user does not exist.');
 
-                } elseif (isset($_GET['openid_ns'])) {
-                    // Parse OpenID Response
-                    $consumer = $this->_getConsumer();
-                    $response = $consumer->complete($this->_urlReturn());
+                    return;
+                }
 
-                    if ($response->status == 'success') {
-                        $this->_authenticate();
-                    } elseif ($response->status == 'failure') {
-                        new WP_Error('openid', 'OpenID login failed.');
-                    } elseif ($response->status == 'cancel') {
-                        new WP_Error('openid', 'OpenID login canceled.');
-                    }
-
+                // Handle OpenID Request
+                if (isset($_GET['openid_ns'])) {
+                    $this->requestComplete();
                 } else {
-                    // New OpenID Request
-
-                    // Start OpenID Engine
-                    $consumer = $this->_getConsumer();
-                    $auth_request = $consumer->begin($this->_apps_domain);
-
-                    if (!$auth_request) {
-                        new WP_Error('openid', 'Could not start OpenID engine.');
-                    }
-
-                    // Prepare PAPE
-                    $pape_request = new \Auth_OpenID_PAPE_Request(
-                        array(
-                            PAPE_AUTH_PHISHING_RESISTANT,
-                            PAPE_AUTH_MULTI_FACTOR
-                        ),
-                        1 //Max Age
-                    );
-                    $auth_request->addExtension($pape_request);
-
-                    // Get Redirect URL
-                    $redirect_url = $auth_request->redirectURL(get_site_url(), $this->_urlReturn());
-
-                    if (\Auth_OpenID::isFailure($redirect_url)) {
-                        new WP_Error('openid', 'OpenID redirect URL is not valid.');
-                    } else {
-                        wp_redirect($redirect_url);
-                        exit;
-                    }
+                    $this->requestBegin();
                 }
             }
 
@@ -159,6 +123,52 @@ class Login
         new \GApps_OpenID_Discovery($consumer);
 
         return $consumer;
+    }
+
+    private function requestBegin()
+    {
+        // Start OpenID Engine
+        $consumer = $this->_getConsumer();
+        $auth_request = $consumer->begin($this->_apps_domain);
+
+        if (!$auth_request) {
+            new WP_Error('openid', 'Could not start OpenID engine.');
+        }
+
+        // Prepare PAPE
+        $pape_request = new \Auth_OpenID_PAPE_Request(
+            array(
+                PAPE_AUTH_PHISHING_RESISTANT,
+                PAPE_AUTH_MULTI_FACTOR
+            ),
+            1 //Max Age
+        );
+        $auth_request->addExtension($pape_request);
+
+        // Get Redirect URL
+        $redirect_url = $auth_request->redirectURL(get_site_url(), $this->_urlReturn());
+
+        if (\Auth_OpenID::isFailure($redirect_url)) {
+            new WP_Error('openid', 'OpenID redirect URL is not valid.');
+        } else {
+            wp_redirect($redirect_url);
+            exit;
+        }
+    }
+
+    private function requestComplete()
+    {
+        // Parse OpenID Response
+        $consumer = $this->_getConsumer();
+        $response = $consumer->complete($this->_urlReturn());
+
+        if ($response->status == 'success') {
+            $this->_authenticate();
+        } elseif ($response->status == 'failure') {
+            new WP_Error('openid', 'OpenID login failed.');
+        } elseif ($response->status == 'cancel') {
+            new WP_Error('openid', 'OpenID login canceled.');
+        }
     }
 
     /**
