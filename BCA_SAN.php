@@ -62,7 +62,12 @@ class BCA_SAN
             }
 
             // Check for BCA Auth
-            if (isset($_GET['bca-auth']) OR strpos($_GET['openid_op_endpoint'], 'brodkinca.com')) {
+            if (
+                isset($_GET['bca-auth'])
+                || (isset($_GET['openid_op_endpoint'])
+                    && strpos($_GET['openid_op_endpoint'], 'brodkinca.com')
+                )
+            ) {
                 // Open a PHP Session
                 session_start();
 
