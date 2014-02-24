@@ -9,7 +9,7 @@
  * @link     http://brodkinca.com/
  *
  * Plugin Name: BCA Swiss Army Knife
- * Version: 1.1.0
+ * Version: 1.1.1
  * Description: Assists Brodkin CyberArts in providing support and troubleshooting.
  * Author: Brodkin CyberArts
  * Author URI: http://brodkinca.com/
