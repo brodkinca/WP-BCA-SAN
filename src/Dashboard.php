@@ -63,7 +63,9 @@ class Dashboard
             $maxitems = $rss->get_item_quantity(1);
             $rss_items = $rss->get_items(0, $maxitems);
 
-            if ($maxitems == 0) echo '<li>News and updates coming soon!</li>';
+            if ($maxitems == 0) {
+                echo '<li>News and updates coming soon!</li>';
+            }
 
             echo '<div class="rss-widget"><ul>';
 

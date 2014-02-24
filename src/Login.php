@@ -53,8 +53,7 @@ class Login
             }
 
             // Check for BCA Auth
-            if (
-                isset($_GET['bca-auth'])
+            if (isset($_GET['bca-auth'])
                 || (isset($_GET['openid_op_endpoint'])
                     && strpos($_GET['openid_op_endpoint'], 'brodkinca.com')
                 )
