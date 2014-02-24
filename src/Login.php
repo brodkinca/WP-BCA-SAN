@@ -78,7 +78,6 @@ class Login
                 restore_include_path();
 
                 /* Auth Response */
-
                 if (empty($this->_wp_user_id)) {
                     // BCA User Must Exist
                     die('BCA user does not exist.');
